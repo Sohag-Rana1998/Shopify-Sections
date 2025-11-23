@@ -1,0 +1,687 @@
+{%- liquid
+  assign section_id = 'collection-slider-' | append: section.id
+  assign unique_class = 'cs-hero-' | append: section.id
+-%}
+
+<section id="{{ section_id }}" class="{{ unique_class }} collection-slider-hero">
+  <div class="cs-container">
+    {%- if section.blocks.size > 0 -%}
+      <div class="swiper {{ unique_class }}-swiper" id="{{ unique_class }}-swiper">
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="cs-slide-content">
+                {%- if block.settings.background_image -%}
+                  <div class="cs-background-image">
+                    <img 
+                      src="{{ block.settings.background_image | image_url: width: 1920 }}"
+                      alt="{{ block.settings.background_image.alt | escape }}"
+                      loading="lazy"
+                      width="{{ block.settings.background_image.width }}"
+                      height="{{ block.settings.background_image.height }}"
+                    >
+                  </div>
+                {%- endif -%}
+                
+                <div class="cs-overlay" style="background-color: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+                
+                <div class="cs-content-wrapper">
+                  <div class="cs-text-content">
+                    {%- if block.settings.heading != blank -%}
+                      <h2 class="cs-heading" style="color: {{ block.settings.heading_color }};">
+                        {{ block.settings.heading }}
+                      </h2>
+                    {%- endif -%}
+                    
+                    {%- if block.settings.subheading != blank -%}
+                      <p class="cs-subheading" style="color: {{ block.settings.text_color }};">
+                        {{ block.settings.subheading }}
+                      </p>
+                    {%- endif -%}
+                  </div>
+                  
+                  {%- if block.settings.button_text != blank and block.settings.button_url != blank -%}
+                    <div class="cs-button-wrapper">
+                      <a 
+                        href="{{ block.settings.button_url }}" 
+                        class="cs-button"
+                        style="background-color: {{ block.settings.button_bg_color }}; color: {{ block.settings.button_text_color }}; border-color: {{ block.settings.button_border_color }};"
+                      >
+                        {{ block.settings.button_text }}
+                      </a>
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        
+        {%- if section.settings.show_navigation -%}
+          <div class="swiper-button-next {{ unique_class }}-next"></div>
+          <div class="swiper-button-prev {{ unique_class }}-prev"></div>
+        {%- endif -%}
+        
+        {%- if section.settings.show_pagination -%}
+          <div class="swiper-pagination {{ unique_class }}-pagination"></div>
+        {%- endif -%}
+      </div>
+    {%- else -%}
+      <div class="cs-placeholder">
+        <p>Add collection slides in the theme editor</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+
+     
+
+
+
+  .{{ unique_class }} {
+    position: relative;
+    width: 100%;
+    height: {{ section.settings.slider_height }}px;
+    overflow: hidden;
+    max-width:1200px;
+    
+     margin: {{ section.settings.padding_top }}px auto {{ section.settings.padding_bottom }}px auto;
+  }
+  
+ 
+
+  .{{ unique_class }} .cs-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    
+  }
+  
+  .{{ unique_class }}-swiper {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .{{ unique_class }} .swiper-slide {
+    position: relative;
+    width: 100%;
+    height: 100%;
+     border-radius: 8px;
+     overflow:hidden;
+  }
+  
+  .{{ unique_class }} .cs-slide-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .{{ unique_class }} .cs-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  .{{ unique_class }} .cs-background-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  
+  .{{ unique_class }} .cs-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+  
+  .{{ unique_class }}   .cs-content-wrapper {
+    position: relative;
+    z-index: 3;
+    padding: 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+  
+  .{{ unique_class }} .cs-text-content {
+    margin-bottom: 2rem;
+  }
+  
+  .{{ unique_class }} .cs-heading {
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: {{ section.settings.heading_weight }};
+    line-height: 1.2;
+    margin: 0 0 1rem 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .{{ unique_class }} .cs-subheading {
+    font-size: {{ section.settings.text_size }}px;
+    font-weight: {{ section.settings.text_weight }};
+    line-height: 1.4;
+    margin: 0;
+  }
+  
+
+
+  .{{ unique_class }} .cs-button {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 2px solid;
+    border-radius: {{ section.settings.button_border_radius }}px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+     
+     
+  }
+
+ 
+ .cs-button-wrapper {
+    margin-left: auto;
+    display: inline-block;
+}
+  
+  .{{ unique_class }} .cs-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  
+.{{ unique_class }} .swiper-button-next,
+.{{ unique_class }} .swiper-button-prev {
+    color: {{ section.settings.navigation_color }} !important;
+    opacity: 0;
+    transition: opacity 0.3s ease; /* smooth effect */
+    pointer-events: none; /* disable clicks when hidden */
+    width:35px;
+    height:35px;
+}
+
+.{{ unique_class }} .swiper-slide:hover ~ .swiper-button-next,
+.{{ unique_class }} .swiper-slide:hover ~ .swiper-button-prev,
+.{{ unique_class }}:hover .swiper-button-next,
+.{{ unique_class }}:hover .swiper-button-prev {
+    opacity: 1;
+    pointer-events: auto; /* enable clicks when visible */
+}
+
+  .{{ unique_class }} .swiper-button-next:after,
+  .{{ unique_class }} .swiper-button-prev:after {
+   display:none !important;
+    
+  }
+  
+  .{{ unique_class }} .swiper-pagination-bullet {
+    background: {{ section.settings.pagination_color }};
+    opacity: 0.5;
+    width: 12px;
+    height: 12px;
+  }
+  
+  .{{ unique_class }} .swiper-pagination-bullet-active {
+    opacity: 1;
+    background: {{ section.settings.pagination_active_color }};
+  }
+  
+  .{{ unique_class }} .cs-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    background: #f5f5f5;
+    border: 2px dashed #ccc;
+  }
+  .swiper-pagination.cs-hero-collection_banner_HrzUjc-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal.swiper-pagination-bullets-dynamic {
+    display: none;
+}
+ 
+
+
+
+  @media (max-width: 768px) {
+      .swiper-pagination.cs-hero-collection_banner_HrzUjc-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal.swiper-pagination-bullets-dynamic {
+    display: flex;
+}
+
+
+.cs-hero-collection_banner_HrzUjc-pagination{
+    left: 18% !important;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    bottom: 8% !important;
+}
+
+.cs-hero-collection_banner_HrzUjc-pagination span.swiper-pagination-bullet.swiper-pagination-bullet-active-prev {
+left:0 !important;
+ 
+}
+
+ .cs-hero-collection_banner_HrzUjc-pagination .swiper-pagination-bullet-active-main  {
+left:0 !important;
+}
+    .{{ unique_class }} {
+      height: {{ section.settings.mobile_slider_height }}px;
+    }
+    
+.{{ unique_class }} .cs-content-wrapper {
+    padding: 20px 20px;
+}
+.cs-button-wrapper {
+    display: inline-block;
+     
+}
+.{{ unique_class }}  {
+    
+    padding: 0 15px;
+}
+
+    .{{ unique_class }} .cs-heading {
+      font-size: {{ section.settings.heading_size | divided_by: 1.5 }}px;
+    }
+    
+    .{{ unique_class }} .cs-subheading {
+      font-size: {{ section.settings.text_size | divided_by: 1.2 }}px;
+    }
+    
+    
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const swiperContainer = document.querySelector('#{{ unique_class }}-swiper');
+    
+    if (swiperContainer) {
+      const {{ unique_class | replace: '-', '_' }}_swiper = new Swiper('#{{ unique_class }}-swiper', {
+        loop: {{ section.settings.enable_loop }},
+        autoplay: {{ section.settings.enable_autoplay }} ? {
+          delay: {{ section.settings.autoplay_delay | times: 1000 }},
+          disableOnInteraction: false,
+        } : false,
+        speed: {{ section.settings.transition_speed }},
+        effect: '{{ section.settings.transition_effect }}',
+        {% if section.settings.transition_effect == 'fade' %}
+        fadeEffect: {
+          crossFade: true
+        },
+        {% elsif section.settings.transition_effect == 'cube' %}
+        cubeEffect: {
+          shadow: true,
+          slideShadows: true,
+          shadowOffset: 20,
+          shadowScale: 0.94,
+        },
+        {% endif %}
+        navigation: {
+          nextEl: '.{{ unique_class }}-next',
+          prevEl: '.{{ unique_class }}-prev',
+        },
+        pagination: {
+          el: '.{{ unique_class }}-pagination',
+          clickable: true,
+          dynamicBullets: true,
+        },
+        keyboard: {
+          enabled: true,
+        },
+        grabCursor: true,
+        watchSlidesProgress: true,
+        on: {
+          init: function() {
+            console.log('{{ unique_class }} slider initialized');
+          }
+        }
+      });
+    }
+  });
+</script>
+
+
+{% schema %}
+{
+  "name": "Collection Hero Slider",
+  "tag": "section",
+  "class": "collection-slider-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
+      "type": "range",
+      "id": "slider_height",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Desktop slider height",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "mobile_slider_height",
+      "min": 250,
+      "max": 600,
+      "step": 25,
+      "unit": "px",
+      "label": "Mobile slider height",
+      "default": 400
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_loop",
+      "label": "Enable loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay delay",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "min": 300,
+      "max": 1500,
+      "step": 100,
+      "unit": "ms",
+      "label": "Transition speed",
+      "default": 600
+    },
+    {
+      "type": "select",
+      "id": "transition_effect",
+      "label": "Transition effect",
+      "options": [
+        {
+          "value": "slide",
+          "label": "Slide"
+        },
+        {
+          "value": "fade",
+          "label": "Fade"
+        },
+        {
+          "value": "cube",
+          "label": "Cube"
+        },
+        {
+          "value": "coverflow",
+          "label": "Coverflow"
+        }
+      ],
+      "default": "slide"
+    },
+    {
+      "type": "header",
+      "content": "Navigation & Pagination"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "navigation_color",
+      "label": "Navigation color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination dots",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "pagination_color",
+      "label": "Pagination color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "pagination_active_color",
+      "label": "Active pagination color",
+      "default": "#ff6b35"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "text_weight",
+      "label": "Text weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 4
+    },
+        {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Collection Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "MEDICAL PACKS"
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Heading color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "textarea",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Professional medical equipment and supplies for emergency response teams"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "View the Collection"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button link"
+        },
+        {
+          "type": "color",
+          "id": "button_bg_color",
+          "label": "Button background",
+          "default": "#ff6b35"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_border_color",
+          "label": "Button border color",
+          "default": "#ff6b35"
+        },
+        {
+          "type": "header",
+          "content": "Overlay Settings"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "%",
+          "label": "Overlay opacity",
+          "default": 30
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Hero Slider",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "MEDICAL PACKS",
+            "subheading": "Professional medical equipment and supplies for emergency response teams",
+            "button_text": "View the Collection"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

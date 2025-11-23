@@ -1,0 +1,381 @@
+<section class="latest-blogs-section" style="background-color: {{ section.settings.background_color }}; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+  <div class="container">
+    {% if section.settings.section_title != blank %}
+      <h2 class="main-title" style="color: {{ section.settings.title_color }}; text-align: center; margin-bottom: 40px; font-size: {{ section.settings.title_size }}px;">
+        {{ section.settings.section_title }}
+      </h2>
+    {% endif %}
+    
+    <div class="blog-content-wrapper">
+      <div class="blog-image-container">
+        {% if section.settings.featured_image != blank %}
+          <img src="{{ section.settings.featured_image | img_url: '600x400' }}" 
+               alt="{{ section.settings.featured_image.alt | default: 'Featured blog image' }}"
+               class="featured-blog-image">
+        {% else %}
+          <div class="placeholder-image">
+            <p>Add featured image</p>
+          </div>
+        {% endif %}
+      </div>
+      
+      <div class="blog-titles-container">
+        {% assign selected_blog = blogs[section.settings.blog_handle] %}
+        {% if selected_blog and selected_blog.articles.size > 0 %}
+          {% for article in selected_blog.articles limit: section.settings.posts_count %}
+            <div class="blog-title-item">
+              <a href="{{ article.url }}" 
+                 class="blog-title-link"
+                 style="color: {{ section.settings.link_color }}; font-size: {{ section.settings.link_size }}px;">
+                {{ article.title }}
+              </a>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="no-blogs-message">
+            <p>No blog posts found. Please select a blog in the section settings.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .latest-blogs-section {
+    width: 100%;
+  }
+  
+  .latest-blogs-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+ 
+  .blog-content-wrapper {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    background: {{ section.settings.content_background }};
+    border-radius: {{ section.settings.border_radius }}px;
+    padding: {{ section.settings.content_padding }}px;
+    box-shadow: {{ section.settings.box_shadow }};
+  }
+  
+  .blog-image-container {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  
+  .featured-blog-image {
+    width: 100%;
+    height: auto;
+    border-radius: {{ section.settings.image_border_radius }}px;
+    object-fit: cover;
+  }
+  
+  .placeholder-image {
+    width: 100%;
+    height: 300px;
+    background-color: #f0f0f0;
+    border: 2px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: {{ section.settings.image_border_radius }}px;
+  }
+  
+  .blog-titles-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.title_spacing }}px;
+  }
+  
+  .blog-title-item {
+    padding: {{ section.settings.item_padding }}px 0;
+     border-bottom: 1px solid #e6dbdb;
+  }
+ 
+  
+  .blog-title-item:last-child {
+    border-bottom: none;
+  }
+  
+  .blog-title-link {
+    text-decoration: none;
+    font-weight: {{ section.settings.link_weight }};
+    line-height: 1.4;
+    display: block;
+    transition: all 0.3s ease;
+  }
+  
+  .blog-title-link:hover {
+    color: {{ section.settings.link_hover_color }};
+    transform: translateX({{ section.settings.hover_offset }}px);
+  }
+  
+  .no-blogs-message {
+    color: #666;
+    font-style: italic;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .blog-content-wrapper {
+      flex-direction: column;
+      gap: 30px;
+    }
+    
+    .blog-image-container {
+      flex: none;
+      max-width: 100%;
+    }
+    
+ 
+    .blog-title-link {
+      font-size: {{ section.settings.link_size | minus: 2 }}px !important;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .latest-blogs-section .container {
+      padding: 0 15px;
+    }
+    
+    .blog-content-wrapper {
+      padding: {{ section.settings.content_padding | divided_by: 2 }}px;
+    }
+  }
+</style>
+
+
+
+{% schema %}
+{
+  "name": "Latest Blog Posts",
+  "tag": "section",
+  "class": "latest-blogs-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Latest Safety Insights from Rescue Supply University"
+    },
+    {
+      "type": "blog",
+      "id": "blog_handle",
+      "label": "Select Blog",
+      "info": "Choose which blog to display posts from"
+    },
+    {
+      "type": "range",
+      "id": "posts_count",
+      "label": "Number of Posts to Show",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Featured Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "featured_image",
+      "label": "Left Side Featured Image",
+      "info": "Recommended size: 600x400px"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section Background Color",
+      "default": "#f8f9fa"
+    },
+    {
+      "type": "color",
+      "id": "content_background",
+      "label": "Content Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Section Title Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Blog Title Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Blog Title Hover Color",
+      "default": "#0066cc"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider Color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+ 
+    {
+      "type": "range",
+      "id": "link_size",
+      "label": "Blog Title Font Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "link_weight",
+      "label": "Blog Title Font Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Section Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Section Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "label": "Content Area Padding",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Content Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "title_spacing",
+      "label": "Space Between Blog Titles",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "default": 15,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "item_padding",
+      "label": "Blog Title Item Padding",
+      "min": 5,
+      "max": 25,
+      "step": 1,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Visual Effects"
+    },
+    {
+      "type": "text",
+      "id": "box_shadow",
+      "label": "Box Shadow",
+      "default": "0 4px 6px rgba(0, 0, 0, 0.1)",
+      "info": "CSS box-shadow value"
+    },
+   
+    {
+      "type": "range",
+      "id": "hover_offset",
+      "label": "Hover Animation Offset",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Latest Blog Posts",
+      "settings": {
+        "section_title": "Latest Safety Insights from Rescue Supply University",
+        "posts_count": 5
+      }
+    }
+  ]
+}
+{% endschema %}
