@@ -1,0 +1,593 @@
+<style>
+  .comparison-section-{{ section.id }} {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, {{ section.settings.bg_gradient_1 }}, {{ section.settings.bg_gradient_2 }});
+    position: relative;
+    overflow: hidden;
+  }
+
+  .comparison-container-{{ section.id }} {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .comparison-title-{{ section.id }} {
+    text-align: center;
+    font-size: 38px;
+    font-weight: 700;
+    color: {{ section.settings.heading_color }};
+    margin-bottom: 50px;
+    line-height: 1.2;
+  }
+
+  /* Comparison Table */
+  .comparison-table-wrapper-{{ section.id }} {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  }
+
+  .comparison-table-{{ section.id }} {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  /* Table Header */
+  .comparison-table-{{ section.id }} thead th {
+    padding: 22px 15px;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    color: {{ section.settings.header_text_color }};
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .comparison-table-{{ section.id }} thead th:first-child {
+    text-align: left;
+    padding-left: 30px;
+    background: transparent;
+  }
+
+  .comparison-table-{{ section.id }} thead th.highlight-column {
+    background: {{ section.settings.highlight_column_bg }};
+    border-radius: 12px 12px 0 0;
+  }
+
+  .product-column-header-{{ section.id }} {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+
+  .product-column-title-{{ section.id }} {
+    display: block;
+    font-size: 17px;
+    font-weight: 800;
+  }
+
+  /* Table Body */
+  .comparison-table-{{ section.id }} tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .comparison-table-{{ section.id }} tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .comparison-table-{{ section.id }} tbody td {
+    padding: 20px 15px;
+    text-align: center;
+    font-size: 14px;
+    color: {{ section.settings.text_color }};
+  }
+
+  .comparison-table-{{ section.id }} tbody td:first-child {
+    text-align: left;
+    padding-left: 30px;
+    font-weight: 600;
+    font-size: 15px;
+    color: {{ section.settings.feature_text_color }};
+  }
+
+  .comparison-table-{{ section.id }} tbody td.highlight-column {
+    background: {{ section.settings.highlight_column_bg }};
+  }
+
+  /* Icons */
+  .comparison-check-icon-{{ section.id }},
+  .comparison-cross-icon-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+
+  .comparison-check-icon-{{ section.id }} {
+    background: {{ section.settings.check_bg_color }};
+    color: {{ section.settings.check_icon_color }};
+  }
+
+  .comparison-cross-icon-{{ section.id }} {
+    background: {{ section.settings.cross_bg_color }};
+    color: {{ section.settings.cross_icon_color }};
+  }
+
+  .comparison-check-icon-{{ section.id }} svg,
+  .comparison-cross-icon-{{ section.id }} svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* CTA Button */
+  .comparison-cta-wrapper-{{ section.id }} {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .comparison-cta-button-{{ section.id }} {
+    display: inline-block;
+    background: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    padding: 18px 50px;
+    border-radius: 50px;
+    font-size: 17px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-transform: capitalize;
+  }
+
+  .comparison-cta-button-{{ section.id }}:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  @media (max-width: 968px) {
+    .comparison-section-{{ section.id }} {
+      padding: 60px 15px;
+    }
+
+    .comparison-title-{{ section.id }} {
+      font-size: 28px;
+      margin-bottom: 35px;
+    }
+
+    .comparison-table-wrapper-{{ section.id }} {
+      overflow-x: auto;
+    }
+
+    .comparison-table-{{ section.id }} {
+      min-width: 600px;
+    }
+
+    .comparison-table-{{ section.id }} thead th {
+      padding: 18px 12px;
+      font-size: 13px;
+    }
+
+    .product-column-title-{{ section.id }} {
+      font-size: 15px;
+    }
+
+    .comparison-table-{{ section.id }} tbody td {
+      padding: 16px 12px;
+      font-size: 13px;
+    }
+
+    .comparison-table-{{ section.id }} tbody td:first-child {
+      padding-left: 20px;
+      font-size: 13px;
+    }
+
+    .comparison-check-icon-{{ section.id }},
+    .comparison-cross-icon-{{ section.id }} {
+      width: 28px;
+      height: 28px;
+    }
+
+    .comparison-check-icon-{{ section.id }} svg,
+    .comparison-cross-icon-{{ section.id }} svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .comparison-cta-button-{{ section.id }} {
+      font-size: 15px;
+      padding: 16px 40px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .comparison-title-{{ section.id }} {
+      font-size: 24px;
+    }
+
+    .comparison-table-{{ section.id }} tbody td:first-child {
+      font-size: 12px;
+    }
+  }
+</style>
+
+<section class="comparison-section-{{ section.id }}">
+  <div class="comparison-container-{{ section.id }}">
+    
+    {% if section.settings.title != blank %}
+      <h2 class="comparison-title-{{ section.id }}">
+        {{ section.settings.title }}
+      </h2>
+    {% endif %}
+
+    <div class="comparison-table-wrapper-{{ section.id }}">
+      <table class="comparison-table-{{ section.id }}">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="highlight-column">
+              <span class="product-column-header-{{ section.id }}">{{ section.settings.column_1_label }}</span>
+              <span class="product-column-title-{{ section.id }}">{{ section.settings.column_1_title }}</span>
+            </th>
+            <th>
+              <span class="product-column-header-{{ section.id }}">{{ section.settings.column_2_label }}</span>
+              <span class="product-column-title-{{ section.id }}">{{ section.settings.column_2_title }}</span>
+            </th>
+            <th>
+              <span class="product-column-header-{{ section.id }}">{{ section.settings.column_3_label }}</span>
+              <span class="product-column-title-{{ section.id }}">{{ section.settings.column_3_title }}</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for block in section.blocks %}
+            {% if block.type == 'comparison_row' %}
+              <tr {{ block.shopify_attributes }}>
+                <td>{{ block.settings.feature_name }}</td>
+                
+                <!-- Column 1 (ELVA) -->
+                <td class="highlight-column">
+                  {% if block.settings.column_1_value %}
+                    <div class="comparison-check-icon-{{ section.id }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                  {% else %}
+                    <div class="comparison-cross-icon-{{ section.id }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                  {% endif %}
+                </td>
+
+                <!-- Column 2 -->
+                <td>
+                  {% if block.settings.column_2_value %}
+                    <div class="comparison-check-icon-{{ section.id }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                  {% else %}
+                    <div class="comparison-cross-icon-{{ section.id }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                  {% endif %}
+                </td>
+
+                <!-- Column 3 -->
+                <td>
+                  {% if block.settings.column_3_value %}
+                    <div class="comparison-check-icon-{{ section.id }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                  {% else %}
+                    <div class="comparison-cross-icon-{{ section.id }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if section.settings.show_cta %}
+      <div class="comparison-cta-wrapper-{{ section.id }}">
+        <a href="{{ section.settings.cta_link }}" class="comparison-cta-button-{{ section.id }}">
+          {{ section.settings.cta_text }}
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Comparison Table",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "ELVA Daily Detox Powder vs Others"
+    },
+    {
+      "type": "header",
+      "content": "Column Headers"
+    },
+    {
+      "type": "text",
+      "id": "column_1_label",
+      "label": "Column 1 Label",
+      "default": "Your Choice"
+    },
+    {
+      "type": "text",
+      "id": "column_1_title",
+      "label": "Column 1 Title",
+      "default": "ELVA Daily Detox"
+    },
+    {
+      "type": "text",
+      "id": "column_2_label",
+      "label": "Column 2 Label",
+      "default": "Other"
+    },
+    {
+      "type": "text",
+      "id": "column_2_title",
+      "label": "Column 2 Title",
+      "default": "Detox Powders"
+    },
+    {
+      "type": "text",
+      "id": "column_3_label",
+      "label": "Column 3 Label",
+      "default": "Traditional"
+    },
+    {
+      "type": "text",
+      "id": "column_3_title",
+      "label": "Column 3 Title",
+      "default": "Detox Teas"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show CTA Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button Text",
+      "default": "Order Your ELVA Today"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_gradient_1",
+      "label": "Background Gradient Start",
+      "default": "#A8C5B0"
+    },
+    {
+      "type": "color",
+      "id": "bg_gradient_2",
+      "label": "Background Gradient End",
+      "default": "#8BA888"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "header_text_color",
+      "label": "Table Header Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "feature_text_color",
+      "label": "Feature Name Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "highlight_column_bg",
+      "label": "Highlight Column Background",
+      "default": "#6B8E6F"
+    },
+    {
+      "type": "color",
+      "id": "check_bg_color",
+      "label": "Checkmark Background",
+      "default": "rgba(255, 255, 255, 0.25)"
+    },
+    {
+      "type": "color",
+      "id": "check_icon_color",
+      "label": "Checkmark Icon Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "cross_bg_color",
+      "label": "Cross Background",
+      "default": "rgba(0, 0, 0, 0.1)"
+    },
+    {
+      "type": "color",
+      "id": "cross_icon_color",
+      "label": "Cross Icon Color",
+      "default": "rgba(255, 255, 255, 0.6)"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background",
+      "default": "#5A6B5A"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comparison_row",
+      "name": "Comparison Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "feature_name",
+          "label": "Feature Name",
+          "default": "Pleasant Taste & Easy to Use"
+        },
+        {
+          "type": "checkbox",
+          "id": "column_1_value",
+          "label": "ELVA Has This Feature",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "column_2_value",
+          "label": "Others Have This Feature",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "column_3_value",
+          "label": "Traditional Has This Feature",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Comparison Table",
+      "blocks": [
+        {
+          "type": "comparison_row",
+          "settings": {
+            "feature_name": "Delicious Lemon-Ginger Taste",
+            "column_1_value": true,
+            "column_2_value": false,
+            "column_3_value": false
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "feature_name": "Third-Party Tested for Purity",
+            "column_1_value": true,
+            "column_2_value": false,
+            "column_3_value": false
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "feature_name": "Clinically-Backed Ingredients",
+            "column_1_value": true,
+            "column_2_value": false,
+            "column_3_value": false
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "feature_name": "No Harsh Side Effects",
+            "column_1_value": true,
+            "column_2_value": false,
+            "column_3_value": false
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "feature_name": "Contains Live Probiotics",
+            "column_1_value": true,
+            "column_2_value": false,
+            "column_3_value": false
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "feature_name": "Includes Stress-Relief Adaptogens",
+            "column_1_value": true,
+            "column_2_value": false,
+            "column_3_value": false
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "feature_name": "No Artificial Sweeteners or Colors",
+            "column_1_value": true,
+            "column_2_value": false,
+            "column_3_value": true
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "feature_name": "Easy Daily Use (Just Mix & Go)",
+            "column_1_value": true,
+            "column_2_value": true,
+            "column_3_value": false
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,738 @@
+<style>
+  .testimonial-video-section-{{ section.id }} {
+    padding: 100px 20px;
+    background: {{ section.settings.section_bg_color }};
+    overflow: hidden;
+  }
+
+  .testimonial-video-container-{{ section.id }} {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .testimonial-video-header-{{ section.id }} {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .testimonial-video-title-{{ section.id }} {
+    font-size: 48px;
+    font-weight: 700;
+    color: {{ section.settings.heading_color }};
+    margin-bottom: 15px;
+    line-height: 1.2;
+  }
+
+  .testimonial-video-subtitle-{{ section.id }} {
+    font-size: 20px;
+    color: {{ section.settings.text_color }};
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Swiper Container */
+  .testimonial-swiper-{{ section.id }} {
+    width: 100%;
+    padding: 20px 0 60px;
+  }
+
+  .testimonial-swiper-{{ section.id }} .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .testimonial-swiper-{{ section.id }} .swiper-slide {
+    height: auto;
+  }
+
+  /* Video Card */
+  .testimonial-video-card-{{ section.id }} {
+    background: {{ section.settings.card_bg_color }};
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .testimonial-video-card-{{ section.id }}:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Video Wrapper */
+  .testimonial-video-wrapper-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    padding-bottom: 177.78%; /* 9:16 */
+    background: #000;
+    overflow: hidden;
+  }
+
+  .testimonial-video-{{ section.id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .testimonial-video-placeholder-{{ section.id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, {{ section.settings.placeholder_bg_1 }}, {{ section.settings.placeholder_bg_2 }});
+  }
+
+  /* Card Content */
+  .testimonial-video-content-{{ section.id }} {
+    padding: 25px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .testimonial-video-quote-{{ section.id }} {
+    font-size: 16px;
+    line-height: 1.6;
+    color: {{ section.settings.quote_color }};
+    font-style: italic;
+    margin-bottom: 15px;
+    flex-grow: 1;
+  }
+
+  .testimonial-video-author-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+  }
+
+  .testimonial-author-avatar-{{ section.id }} {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid {{ section.settings.accent_color }};
+  }
+
+  .testimonial-author-info-{{ section.id }} {
+    flex: 1;
+  }
+
+  .testimonial-author-name-{{ section.id }} {
+    font-size: 15px;
+    font-weight: 600;
+    color: {{ section.settings.heading_color }};
+    margin-bottom: 2px;
+  }
+
+  .testimonial-author-title-{{ section.id }} {
+    font-size: 13px;
+    color: {{ section.settings.text_color }};
+    opacity: 0.8;
+  }
+
+  .testimonial-star-rating-{{ section.id }} {
+    display: flex;
+    gap: 3px;
+    margin-top: 8px;
+  }
+
+  .testimonial-star-rating-{{ section.id }} svg {
+    width: 16px;
+    height: 16px;
+    fill: #FFD700;
+  }
+
+  /* Swiper Navigation */
+  .swiper-button-prev-custom-{{ section.id }},
+  .swiper-button-next-custom-{{ section.id }} {
+    width: 50px;
+    height: 50px;
+    background: {{ section.settings.nav_bg_color }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+  }
+
+  .swiper-button-prev-custom-{{ section.id }} {
+    left:  5px;
+  }
+
+  .swiper-button-next-custom-{{ section.id }} {
+    right:  5px;
+  }
+
+  .swiper-button-prev-custom-{{ section.id }}:hover,
+  .swiper-button-next-custom-{{ section.id }}:hover {
+    background: {{ section.settings.accent_color }};
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .swiper-button-prev-custom-{{ section.id }}:hover svg,
+  .swiper-button-next-custom-{{ section.id }}:hover svg {
+    color: #ffffff;
+  }
+
+  .swiper-button-prev-custom-{{ section.id }} svg,
+  .swiper-button-next-custom-{{ section.id }} svg {
+    width: 24px;
+    height: 24px;
+    color: {{ section.settings.nav_icon_color }};
+    transition: color 0.3s ease;
+  }
+
+  .swiper-button-disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  /* Swiper Pagination */
+  .swiper-pagination-custom-{{ section.id }} {
+    position: relative;
+    bottom: 0 !important;
+    margin-top: 30px;
+  }
+
+  .swiper-pagination-custom-{{ section.id }} .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: {{ section.settings.pagination_color }};
+    opacity: 0.3;
+    transition: all 0.3s ease;
+  }
+
+  .swiper-pagination-custom-{{ section.id }} .swiper-pagination-bullet-active {
+    background: {{ section.settings.accent_color }};
+    opacity: 1;
+    width: 30px;
+    border-radius: 5px;
+  }
+
+  @media (max-width: 968px) {
+    .testimonial-video-section-{{ section.id }} {
+      padding: 60px 20px;
+    }
+
+    .testimonial-video-title-{{ section.id }} {
+      font-size: 36px;
+    }
+
+    .testimonial-video-subtitle-{{ section.id }} {
+      font-size: 18px;
+    }
+
+    .swiper-button-prev-custom-{{ section.id }},
+    .swiper-button-next-custom-{{ section.id }} {
+      display: none;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .testimonial-video-title-{{ section.id }} {
+      font-size: 28px;
+    }
+
+    .testimonial-video-content-{{ section.id }} {
+      padding: 20px;
+    }
+  }
+</style>
+
+<section class="testimonial-video-section-{{ section.id }}" data-testimonial-section="{{ section.id }}">
+  <div class="testimonial-video-container-{{ section.id }}">
+    
+    {% if section.settings.show_header %}
+      <div class="testimonial-video-header-{{ section.id }}">
+        {% if section.settings.title != blank %}
+          <h2 class="testimonial-video-title-{{ section.id }}">{{ section.settings.title }}</h2>
+        {% endif %}
+        
+        {% if section.settings.subtitle != blank %}
+          <p class="testimonial-video-subtitle-{{ section.id }}">{{ section.settings.subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="swiper testimonial-swiper-{{ section.id }}">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          {% if block.type == 'testimonial' %}
+            <div class="swiper-slide" {{ block.shopify_attributes }}>
+              <div class="testimonial-video-card-{{ section.id }}">
+                
+                <!-- Video Section (no cover photos, no play button) -->
+                <div class="testimonial-video-wrapper-{{ section.id }}">
+                  {% if block.settings.video_url != blank %}
+                    <video
+                      class="testimonial-video-{{ section.id }} video-player-{{ section.id }}"
+                      playsinline
+                      muted
+                      loop
+                      preload="none"
+                      {% if block.settings.enable_controls %}controls{% endif %}
+                      data-autoplay-group="{{ section.id }}"
+                    >
+                      <source src="{{ block.settings.video_url }}" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  {% else %}
+                    <div class="testimonial-video-placeholder-{{ section.id }}">
+                      {% if block.settings.placeholder_image %}
+                        <img
+                          src="{{ block.settings.placeholder_image | img_url: '600x' }}"
+                          alt="{{ block.settings.customer_name }}"
+                          style="width: 100%; height: 100%; object-fit: cover;"
+                          loading="lazy"
+                        >
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <!-- Content Section -->
+                <div class="testimonial-video-content-{{ section.id }}">
+                  {% if block.settings.testimonial_quote != blank %}
+                    <p class="testimonial-video-quote-{{ section.id }}">
+                      "{{ block.settings.testimonial_quote }}"
+                    </p>
+                  {% endif %}
+
+                  <div class="testimonial-video-author-{{ section.id }}">
+                    {% if block.settings.customer_avatar %}
+                      <img
+                        class="testimonial-author-avatar-{{ section.id }}"
+                        src="{{ block.settings.customer_avatar | img_url: '100x100' }}"
+                        alt="{{ block.settings.customer_name }}"
+                        loading="lazy"
+                      >
+                    {% else %}
+                      <img
+                        class="testimonial-author-avatar-{{ section.id }}"
+                        src="https://ui-avatars.com/api/?name={{ block.settings.customer_name | url_encode }}&background=8BA888&color=fff&size=100"
+                        alt="{{ block.settings.customer_name }}"
+                        loading="lazy"
+                      >
+                    {% endif %}
+
+                    <div class="testimonial-author-info-{{ section.id }}">
+                      {% if block.settings.customer_name != blank %}
+                        <div class="testimonial-author-name-{{ section.id }}">{{ block.settings.customer_name }}</div>
+                      {% endif %}
+                      
+                      {% if block.settings.customer_title != blank %}
+                        <div class="testimonial-author-title-{{ section.id }}">{{ block.settings.customer_title }}</div>
+                      {% endif %}
+
+                      {% if block.settings.show_rating %}
+                        <div class="testimonial-star-rating-{{ section.id }}">
+                          {% for i in (1..5) %}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                          {% endfor %}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      {% if section.settings.show_navigation %}
+        <div class="swiper-button-prev-custom-{{ section.id }}">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+        </div>
+        <div class="swiper-button-next-custom-{{ section.id }}">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+      {% endif %}
+
+      {% if section.settings.show_pagination %}
+        <div class="swiper-pagination swiper-pagination-custom-{{ section.id }}"></div>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function() {
+  var sectionId = '{{ section.id }}';
+  var sectionEl = document.querySelector('.testimonial-video-section-' + sectionId);
+
+  if (!sectionEl) return;
+
+  function loadSwiperAssets(cb) {
+    // CSS
+    if (!document.querySelector('link[data-swiper-css="1"]')) {
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
+      link.setAttribute('data-swiper-css', '1');
+      document.head.appendChild(link);
+    }
+
+    // JS
+    if (window.Swiper) {
+      cb();
+      return;
+    }
+
+    if (window.__loadingSwiper) {
+      var t = setInterval(function() {
+        if (window.Swiper) {
+          clearInterval(t);
+          cb();
+        }
+      }, 50);
+      return;
+    }
+
+    window.__loadingSwiper = true;
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
+    script.async = true;
+    script.onload = function() {
+      cb();
+    };
+    document.head.appendChild(script);
+  }
+
+  function startAllVideos() {
+    var videos = sectionEl.querySelectorAll('video[data-autoplay-group="' + sectionId + '"]');
+    videos.forEach(function(video) {
+      // Make sure the browser allows autoplay
+      video.muted = true;
+      video.playsInline = true;
+
+      // Start
+      var p = video.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(function() {
+          // Autoplay can still be blocked in rare cases; keep muted/loop and do nothing else
+        });
+      }
+    });
+  }
+
+  function initSwiperAndVideos() {
+    if (sectionEl.getAttribute('data-initialized') === '1') return;
+    sectionEl.setAttribute('data-initialized', '1');
+
+    loadSwiperAssets(function() {
+      if (!window.Swiper) return;
+
+      // Init Swiper only when section enters viewport
+      new Swiper('.testimonial-swiper-' + sectionId, {
+        loop: {{ section.settings.enable_loop }},
+        loopedSlides: 3,
+        slidesPerView: 1,
+        spaceBetween: 20,
+
+        {% if section.settings.enable_autoplay %}
+        autoplay: {
+          delay: {{ section.settings.autoplay_delay }},
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true
+        },
+        {% endif %}
+
+        speed: {{ section.settings.slide_speed }},
+
+        {% if section.settings.show_pagination %}
+        pagination: {
+          el: '.swiper-pagination-custom-' + sectionId,
+          clickable: true
+        },
+        {% endif %}
+
+        {% if section.settings.show_navigation %}
+        navigation: {
+          nextEl: '.swiper-button-next-custom-' + sectionId,
+          prevEl: '.swiper-button-prev-custom-' + sectionId
+        },
+        {% endif %}
+
+        breakpoints: {
+          640: { slidesPerView: 2, spaceBetween: 25 },
+          968: { slidesPerView: 3, spaceBetween: 30 },
+          1200: { slidesPerView: {{ section.settings.slides_desktop }}, spaceBetween: 35 }
+        }
+      });
+
+      // Autoplay all videos together once visible
+      startAllVideos();
+    });
+  }
+
+  // IntersectionObserver: initialize only when section is in viewport
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        initSwiperAndVideos();
+        io.disconnect();
+      }
+    });
+  }, { root: null, threshold: 0.15, rootMargin: '150px 0px' });
+
+  io.observe(sectionEl);
+})();
+</script>
+
+{% schema %}
+{
+  "name": " Testimonials Video",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show Section Header",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Trusted By Wellness Enthusiasts"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "See how real people are using ELVA to transform their daily wellness routine"
+    },
+    {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_loop",
+      "label": "Enable Infinite Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "label": "Autoplay Delay (milliseconds)",
+      "min": 2000,
+      "max": 9000,
+      "step": 1000,
+      "default": 5000
+    },
+    {
+      "type": "range",
+      "id": "slide_speed",
+      "label": "Slide Speed (milliseconds)",
+      "min": 300,
+      "max": 1500,
+      "step": 100,
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "slides_desktop",
+      "label": "Slides to Show (Desktop)",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show Navigation Arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show Pagination Dots",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background",
+      "default": "#F9F6F1"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#2C3E2C"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#5A6B5A"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#8BA888"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "quote_color",
+      "label": "Quote Text Color",
+      "default": "#2C3E2C"
+    },
+    {
+      "type": "color",
+      "id": "nav_bg_color",
+      "label": "Navigation Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "nav_icon_color",
+      "label": "Navigation Icon Color",
+      "default": "#5A6B5A"
+    },
+    {
+      "type": "color",
+      "id": "pagination_color",
+      "label": "Pagination Color",
+      "default": "#5A6B5A"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_bg_1",
+      "label": "Placeholder Gradient Start",
+      "default": "#E8F0E8"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_bg_2",
+      "label": "Placeholder Gradient End",
+      "default": "#D5E6D3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Video Testimonial",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Video Settings"
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "Video URL",
+          "info": "Upload video to Files section and paste URL here"
+        },
+        {
+          "type": "image_picker",
+          "id": "placeholder_image",
+          "label": "Placeholder Image (if no video)",
+          "info": "Displayed if video URL is empty"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_controls",
+          "label": "Show Video Controls",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Customer Information"
+        },
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer Name",
+          "default": "Sarah M."
+        },
+        {
+          "type": "text",
+          "id": "customer_title",
+          "label": "Customer Title",
+          "default": "Wellness Coach"
+        },
+        {
+          "type": "image_picker",
+          "id": "customer_avatar",
+          "label": "Customer Avatar"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Show Star Rating",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Testimonial Content"
+        },
+        {
+          "type": "textarea",
+          "id": "testimonial_quote",
+          "label": "Testimonial Quote",
+          "default": "ELVA has completely transformed my morning routine. I feel more energized and balanced throughout the day!"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": " Testimonials Video",
+      "blocks": [
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" }
+      ]
+    }
+  ]
+}
+{% endschema %}

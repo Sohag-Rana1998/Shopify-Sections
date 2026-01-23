@@ -1,0 +1,548 @@
+{% comment %}
+  Section: Affiliate FAQ
+  Version: 1.0
+  Description: Frequently Asked Questions accordion section for affiliate program
+{% endcomment %}
+
+<section class="affiliate-faq" id="affiliate-faq-{{ section.id }}">
+  <div class="affiliate-faq__container">
+    
+    {% if section.settings.heading != blank or section.settings.subheading != blank %}
+      <div class="affiliate-faq__header">
+        {% if section.settings.heading != blank %}
+          <h2 class="affiliate-faq__heading">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+        
+        {% if section.settings.subheading != blank %}
+          <p class="affiliate-faq__subheading">
+            {{ section.settings.subheading }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="affiliate-faq__accordion">
+        {% for block in section.blocks %}
+          <div class="affiliate-faq__item" {{ block.shopify_attributes }} data-faq-item>
+            <button 
+              class="affiliate-faq__question" 
+              type="button"
+              aria-expanded="{% if forloop.first and section.settings.first_open %}true{% else %}false{% endif %}"
+              data-faq-trigger
+            >
+              <span class="affiliate-faq__question-text">
+                {{ block.settings.question }}
+              </span>
+              <span class="affiliate-faq__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="affiliate-faq__icon-line affiliate-faq__icon-line--vertical" d="M12 8v8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                  <path class="affiliate-faq__icon-line affiliate-faq__icon-line--horizontal" d="M8 12h8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+            </button>
+            <div 
+              class="affiliate-faq__answer-wrapper" 
+              data-faq-content
+              {% if forloop.first and section.settings.first_open %}style="max-height: 500px;"{% endif %}
+            >
+              <div class="affiliate-faq__answer">
+                {{ block.settings.answer }}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<script>
+  // FAQ Accordion Functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const faqItems = document.querySelectorAll('[data-faq-item]');
+    
+    faqItems.forEach(item => {
+      const trigger = item.querySelector('[data-faq-trigger]');
+      const content = item.querySelector('[data-faq-content]');
+      
+      if (trigger && content) {
+        trigger.addEventListener('click', function() {
+          const isExpanded = this.getAttribute('aria-expanded') === 'true';
+          
+          // Close all other items (optional - remove if you want multiple open)
+          faqItems.forEach(otherItem => {
+            if (otherItem !== item) {
+              const otherTrigger = otherItem.querySelector('[data-faq-trigger]');
+              const otherContent = otherItem.querySelector('[data-faq-content]');
+              if (otherTrigger && otherContent) {
+                otherTrigger.setAttribute('aria-expanded', 'false');
+                otherContent.style.maxHeight = '0';
+              }
+            }
+          });
+          
+          // Toggle current item
+          if (isExpanded) {
+            this.setAttribute('aria-expanded', 'false');
+            content.style.maxHeight = '0';
+          } else {
+            this.setAttribute('aria-expanded', 'true');
+            content.style.maxHeight = content.scrollHeight + 'px';
+          }
+        });
+      }
+    });
+  });
+</script>
+
+<style>
+  .affiliate-faq {
+    padding: 100px 20px;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .affiliate-faq::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(64, 116, 228, 0.2) 50%, transparent 100%);
+  }
+
+  .affiliate-faq__container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .affiliate-faq__header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+  .affiliate-faq__heading {
+    font-size: 48px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 20px 0;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .affiliate-faq__subheading {
+    font-size: 20px;
+    line-height: 1.6;
+    color: #4a5568;
+    margin: 0;
+  }
+
+  .affiliate-faq__accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .affiliate-faq__item {
+    background: #ffffff;
+    border: 2px solid #f0f4f8;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.8s ease-out both;
+  }
+
+  .affiliate-faq__item:nth-child(1) { animation-delay: 0.1s; }
+  .affiliate-faq__item:nth-child(2) { animation-delay: 0.2s; }
+  .affiliate-faq__item:nth-child(3) { animation-delay: 0.3s; }
+  .affiliate-faq__item:nth-child(4) { animation-delay: 0.4s; }
+  .affiliate-faq__item:nth-child(5) { animation-delay: 0.5s; }
+  .affiliate-faq__item:nth-child(6) { animation-delay: 0.6s; }
+
+  .affiliate-faq__item:hover {
+    border-color: rgba(64, 116, 228, 0.3);
+    box-shadow: 0 4px 20px rgba(64, 116, 228, 0.08);
+  }
+
+  .affiliate-faq__question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 32px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+    gap: 20px;
+  }
+
+  .affiliate-faq__question:hover {
+    background: rgba(64, 116, 228, 0.02);
+  }
+
+  .affiliate-faq__question[aria-expanded="true"] {
+    background: linear-gradient(135deg, rgba(64, 116, 228, 0.05) 0%, rgba(64, 116, 228, 0.08) 100%);
+  }
+
+  .affiliate-faq__question-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .affiliate-faq__icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #4074E4 0%, #5b8ef5 100%);
+    border-radius: 50%;
+    color: #ffffff;
+    transition: all 0.3s ease;
+  }
+
+  .affiliate-faq__icon svg {
+    width: 32px;
+    height: 32px;
+    fill:unset;
+}
+
+  .affiliate-faq__question[aria-expanded="true"] .affiliate-faq__icon {
+    transform: rotate(45deg);
+    background: linear-gradient(135deg, #5b8ef5 0%, #6c9ef6 100%);
+  }
+
+  .affiliate-faq__icon svg {
+    display: block;
+  }
+
+  .affiliate-faq__icon-line {
+    transition: opacity 0.3s ease;
+  }
+
+  .affiliate-faq__question[aria-expanded="true"] .affiliate-faq__icon-line--vertical {
+    opacity: 0;
+  }
+
+  .affiliate-faq__answer-wrapper {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .affiliate-faq__answer {
+    padding: 0 32px 32px 32px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: #4a5568;
+  }
+
+  .affiliate-faq__answer p {
+    margin: 0 0 16px 0;
+  }
+
+  .affiliate-faq__answer p:last-child {
+    margin-bottom: 0;
+  }
+
+  .affiliate-faq__answer ul,
+  .affiliate-faq__answer ol {
+    margin: 0 0 16px 0;
+    padding-left: 24px;
+  }
+
+  .affiliate-faq__answer li {
+    margin-bottom: 8px;
+  }
+
+  .affiliate-faq__answer strong {
+    color: #1a1a1a;
+    font-weight: 600;
+  }
+
+  .affiliate-faq__answer a {
+    color: #4074E4;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .affiliate-faq__answer a:hover {
+    color: #5b8ef5;
+    text-decoration: underline;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Tablet Styles */
+  @media screen and (max-width: 1024px) {
+    .affiliate-faq {
+      padding: 80px 20px;
+    }
+
+    .affiliate-faq__heading {
+      font-size: 40px;
+    }
+
+    .affiliate-faq__subheading {
+      font-size: 18px;
+    }
+
+    .affiliate-faq__question {
+      padding: 24px 28px;
+    }
+
+    .affiliate-faq__question-text {
+      font-size: 18px;
+    }
+
+    .affiliate-faq__answer {
+      padding: 0 28px 28px 28px;
+      font-size: 16px;
+    }
+  }
+
+  /* Mobile Styles */
+  @media screen and (max-width: 768px) {
+    .affiliate-faq {
+      padding: 60px 16px;
+    }
+
+    .affiliate-faq__header {
+      margin-bottom: 40px;
+    }
+
+    .affiliate-faq__heading {
+      font-size: 32px;
+    }
+
+    .affiliate-faq__subheading {
+      font-size: 16px;
+    }
+
+    .affiliate-faq__accordion {
+      gap: 12px;
+    }
+
+    .affiliate-faq__question {
+      padding: 20px 24px;
+    }
+
+    .affiliate-faq__question-text {
+      font-size: 17px;
+    }
+
+    .affiliate-faq__icon {
+      width: 28px;
+      height: 28px;
+    }
+
+    .affiliate-faq__answer {
+      padding: 0 24px 24px 24px;
+      font-size: 15px;
+    }
+  }
+
+  /* Small Mobile Styles */
+  @media screen and (max-width: 480px) {
+    .affiliate-faq {
+      padding: 50px 16px;
+    }
+
+    .affiliate-faq__heading {
+      font-size: 28px;
+    }
+
+    .affiliate-faq__subheading {
+      font-size: 15px;
+    }
+
+    .affiliate-faq__question {
+      padding: 18px 20px;
+      gap: 16px;
+    }
+
+    .affiliate-faq__question-text {
+      font-size: 16px;
+    }
+
+    .affiliate-faq__icon {
+      width: 26px;
+      height: 26px;
+    }
+
+    .affiliate-faq__answer {
+      padding: 0 20px 20px 20px;
+      font-size: 14px;
+    }
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .affiliate-faq__header,
+    .affiliate-faq__item {
+      animation: none;
+    }
+
+    .affiliate-faq__question,
+    .affiliate-faq__icon,
+    .affiliate-faq__answer-wrapper {
+      transition: none;
+    }
+  }
+
+  /* High Contrast Mode */
+  @media (prefers-contrast: high) {
+    .affiliate-faq__item {
+      border-color: #4074E4;
+    }
+
+    .affiliate-faq__question[aria-expanded="true"] {
+      background: rgba(64, 116, 228, 0.2);
+    }
+  }
+
+  /* Focus Styles for Accessibility */
+  .affiliate-faq__question:focus {
+    outline: 2px solid #4074E4;
+    outline-offset: 2px;
+  }
+
+  .affiliate-faq__question:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Print Styles */
+  @media print {
+    .affiliate-faq {
+      padding: 40px 0;
+    }
+
+    .affiliate-faq__item {
+      break-inside: avoid;
+      border: 1px solid #000;
+    }
+
+    .affiliate-faq__question[aria-expanded="false"] + .affiliate-faq__answer-wrapper {
+      max-height: none !important;
+      overflow: visible !important;
+    }
+
+    .affiliate-faq__icon {
+      display: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Affiliate FAQ",
+  "tag": "section",
+  "class": "section-affiliate-faq",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "info": "Optional subheading text below the main heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "first_open",
+      "label": "Open First Question by Default",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How does the Vagustim affiliate program work?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>You apply, we review and approve your profile, then we provide your personal discount code and tracking link. You earn commission from each eligible sale you refer.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Affiliate FAQ",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How does the Vagustim affiliate program work?",
+            "answer": "<p>You apply, we review and approve your profile, then we provide your personal discount code and tracking link. You earn commission from each eligible sale you refer.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do affiliates receive their earnings?",
+            "answer": "<p>Affiliate commissions are tracked through our system and paid out 30 days after the order has been successfully delivered, following validation.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "When do commissions get paid?",
+            "answer": "<p>Commissions are paid after a short confirmation/locking period to ensure orders are completed successfully.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I offer discounts with my affiliate code?",
+            "answer": "<p>Yes — approved partners receive an exclusive discount code for their community.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What discount do affiliates get?",
+            "answer": "<p>Affiliates receive a community discount code once approved. (More details will be shared after approval.)</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
