@@ -1,0 +1,517 @@
+{% schema %}
+{
+  "name": "Testimonial Slider",
+  "tag": "section",
+  "class": "testimonial-slider-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Over 3 Million Happy Customers"
+    },
+    {
+      "type": "range",
+      "id": "average_rating",
+      "min": 1,
+      "max": 5,
+      "step": 0.1,
+      "label": "Average Rating",
+      "default": 4.7
+    },
+    {
+      "type": "image_picker",
+      "id": "profiles1",
+      "label": "profile image"
+    },
+    {
+      "type": "image_picker",
+      "id": "profiles2",
+      "label": "profile image"
+    },
+    {
+      "type": "image_picker",
+      "id": "profiles3",
+      "label": "profile image"
+    },
+    {
+      "type": "image_picker",
+      "id": "profiles4",
+      "label": "profile image"
+    },
+    {
+      "type": "image_picker",
+      "id": "profiles5",
+      "label": "profile image"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#C8E95D"
+    },
+    {
+      "type": "select",
+      "id": "color_mode",
+      "label": "Color Mode",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light Mode"
+        },
+        {
+          "value": "dark",
+          "label": "Dark Mode"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_average_rating",
+      "label": "Show Average Rating",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "flavor_title",
+          "label": "Flavor Title",
+          "default": "LEMON-LIME"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Rating",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "testimonial_text",
+          "label": "Testimonial Text",
+          "default": "Lovely flavour & helps avoid the post lunch slump in concentration at work! Love it!"
+        },
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer Name",
+          "default": "Shona"
+        },
+        {
+          "type": "text",
+          "id": "customer_location",
+          "label": "Customer Location",
+          "default": "Poulton-le-Fylde"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial Slider",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "flavor_title": "LEMON-LIME",
+            "testimonial_text": "Lovely flavour & helps avoid the post lunch slump in concentration at work! Love it!",
+            "customer_name": "Shona",
+            "customer_location": "Poulton-le-Fylde"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "flavor_title": "BLACKBERRY",
+            "testimonial_text": "So so so good. If you like the fruitier flavors this will be your jam. Perfectly sweet. No artificial aftertaste as some of the flavors give me.",
+            "customer_name": "Nicole",
+            "customer_location": "Rochester, US"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "flavor_title": "ORANGE",
+            "testimonial_text": "It is amazing for a drink with vitamins, healthy and not super expensive. Let alone without sugar.",
+            "customer_name": "Gerry",
+            "customer_location": "Harlow"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+ 
+
+<style>
+  .testimonial-slider-section {
+    position: relative;
+  }
+
+  .testimonial-container{
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 20px 20px;
+  }
+
+  .testimonial-header {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
+  .testimonial-header h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 0px;
+  }
+  
+  /* Light mode text colors */
+  .testimonial-slider-section.light-mode .testimonial-header h2,
+  .testimonial-slider-section.light-mode .average-rating {
+    color: #000;
+  }
+  
+  /* Dark mode text colors */
+  .testimonial-slider-section.dark-mode .testimonial-header h2,
+  .testimonial-slider-section.dark-mode .average-rating {
+    color: #fff;
+  }
+  
+  .star-rating {
+    color: #FFD700;
+    font-size: 20px;
+    margin-bottom: 0px;
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .average-rating {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .profile-pictures {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 0px;
+  }
+  
+  .profile-picture {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #ddd;
+    margin: 0 -5px;
+    border: 2px solid #fff;
+    overflow: hidden;
+  }
+  
+  .profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .swiper-container {
+    overflow: hidden;
+    padding: 10px 5px 40px;
+  }
+
+  .testimonial-slide {
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+    height: 100%;
+    min-height: 230px;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    box-shadow: 0 0 0;
+    flex-wrap: wrap;
+    background: white;
+  }
+  
+  .testimonial-slide:hover {
+    transform: translateY(-5px);
+  }
+
+  .info-container {
+    width: 70%;
+  }
+  
+  .product-image-container {
+    width: 100px;
+    height: 100px;
+    max-width: 30%;
+    margin-bottom: 0;
+  }
+  
+  .product-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .testimonial-rating {
+    color: #FFD700;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  .testimonial-flavor {
+    font-weight: 800;
+    font-size: 14px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  
+  .testimonial-text {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    flex-grow: 1;
+  }
+  
+  .testimonial-author {
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: auto;
+  }
+  
+  /* Light mode testimonial card text colors */
+  .testimonial-slider-section.light-mode .testimonial-flavor,
+  .testimonial-slider-section.light-mode .testimonial-text,
+  .testimonial-slider-section.light-mode .testimonial-author {
+    color: #000;
+  }
+  
+  /* Dark mode testimonial card text colors */
+  .testimonial-slider-section.dark-mode .testimonial-flavor,
+  .testimonial-slider-section.dark-mode .testimonial-text,
+  .testimonial-slider-section.dark-mode .testimonial-author {
+    color: #fff;
+  }
+  
+  .swiper-button-disabled {
+    opacity: 0.5;
+  }
+  
+  .swiper-pagination {
+    position: relative;
+    bottom: 0;
+  }
+
+  .profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .profile-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  }
+  
+  .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background-color: #ddd !important;
+    opacity: 1 !important;
+  }
+  
+  .swiper-pagination-bullet-active {
+    background: #096ad8 !important;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .testimonial-header h2 {
+      font-size: 28px;
+    }
+    
+    .testimonial-slide {
+      min-height: 200px;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .testimonial-header h2 {
+      font-size: 24px;
+    }
+
+    .testimonial-slide {
+      padding: 20px;
+      flex-direction: column;
+    }
+
+    .info-container {
+      width: 100%;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      width: 36px;
+      height: 36px;
+    }
+    
+    .swiper-button-next:after,
+    .swiper-button-prev:after {
+      font-size: 16px;
+    }
+  }
+</style>
+
+<section class="testimonial-slider-section {{ section.settings.color_mode }}-mode" style="background-color: {{ section.settings.background_color }};">
+  <div class="testimonial-container">
+    <div class="testimonial-header">
+      <h2>{{ section.settings.heading }}</h2>
+      {% if section.settings.show_average_rating %}
+        <div class="star-rating">
+          ★★★★★
+        </div>
+        <div class="rating-info">
+          <span class="average-rating">{{ section.settings.average_rating }} Average Review</span>
+        </div>
+        <div class="profile-pictures">
+          <div class="profile-picture">
+            <img 
+              src="{{ section.settings.profiles1 | img_url: 'master' }}" 
+              alt="Profile picture" 
+              class="profile-image" 
+              loading="lazy"
+              width="60"
+              height="60"
+            >
+          </div>
+          <div class="profile-picture">
+            <img 
+              src="{{ section.settings.profiles2 | img_url: 'master' }}" 
+              alt="Profile picture" 
+              class="profile-image" 
+              loading="lazy"
+              width="60"
+              height="60"
+            >
+          </div>
+          <div class="profile-picture">
+            <img 
+              src="{{ section.settings.profiles3 | img_url: 'master' }}" 
+              alt="Profile picture" 
+              class="profile-image" 
+              loading="lazy"
+              width="60"
+              height="60"
+            >
+          </div>
+          <div class="profile-picture">
+            <img 
+              src="{{ section.settings.profiles4 | img_url: 'master' }}" 
+              alt="Profile picture" 
+              class="profile-image" 
+              loading="lazy"
+              width="60"
+              height="60"
+            >
+          </div>
+          <div class="profile-picture">
+            <img 
+              src="{{ section.settings.profiles5 | img_url: 'master' }}" 
+              alt="Profile picture" 
+              class="profile-image" 
+              loading="lazy"
+              width="60"
+              height="60"
+            >
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  
+    {% if section.blocks.size > 0 %}
+      <div class="swiper-container testimonial-swiper">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            {% if block.type == 'testimonial' %}
+              {% assign product = block.settings.product %}
+              <div class="swiper-slide" {{ block.shopify_attributes }}>
+                <div class="testimonial-slide" 
+                     {% if product != blank %}
+                       onclick="window.location.href='{{ product.url }}'"
+                     {% endif %}
+                  >
+                  
+                  {% if product != blank %}
+                    <div class="product-image-container">
+                      <img data-wpsob="1" data-wpsob-height="1" height="1" data-wpsob-width="1" width="1" data-wpsob-lazy="1" loading="lazy" src="{{ product.featured_image | img_url: '200x200' }}" alt="{{ product.title }}">
+                    </div>
+                  {% endif %}
+                  
+                  <div class="info-container">
+                    <div class="testimonial-rating">
+                      ★★★★★
+                    </div>
+                    
+                    <div class="testimonial-flavor">{{ block.settings.flavor_title }}</div>
+                    
+                    <div class="testimonial-text">{{ block.settings.testimonial_text }}</div>
+                    
+                    <div class="testimonial-author">
+                      — {{ block.settings.customer_name }}{% if block.settings.customer_location != blank %}, {{ block.settings.customer_location }}{% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        
+        <div class="swiper-pagination"></div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var swiper = new Swiper('.testimonial-swiper', {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      loop: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 20
+        },
+        992: {
+          slidesPerView: 3,
+          spaceBetween: 30
+        }
+      }
+    });
+  });
+</script>

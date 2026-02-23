@@ -1,0 +1,130 @@
+<!-- PhotoSwipe CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.min.css">
+<style>
+  img.pswp-gallery-img {
+  cursor: zoom-in;
+  transition: opacity 0.2s ease;
+}
+
+img.pswp-gallery-img:hover {
+  opacity: 0.85;
+}
+ .pswp__bg{
+background-color:white !important;
+}
+
+.pswp__button svg {
+    width: 35px !important;
+    height: 35px !important;
+}
+button.pswp__button.pswp__button--close {
+    background: white !important;
+    border-radius: 4px !important;
+}
+</style>
+
+
+
+
+ {%- if block.settings.image != blank -%}
+                {%- assign full_image_url = block.settings.image | image_url: width: block.settings.image.width -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 2000
+                  | image_tag:
+                    class: 'lp-cs__img pswp-gallery-img',
+                    loading: 'lazy',
+                    data-full-src: full_image_url,
+                    widths: '540, 720, 900, 1200, 1500, 1800, 2000',
+                    sizes: '(min-width: 990px) 33vw, 92vw',
+                    alt: block.settings.image_alt
+                }}
+              {%- else -%}
+                <div class="lp-cs__img lp-cs__img--placeholder"></div>
+              {%- endif -%}
+
+
+
+
+
+
+
+<!-- PhotoSwipe JS -->
+<script type="module">
+  import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js';
+  import PhotoSwipe from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.min.js';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const CLASS_NAME = 'pswp-gallery-img';
+
+    // 1. Collect all images with the common class
+    const images = document.querySelectorAll(`img.${CLASS_NAME}`);
+    if (!images.length) return;
+
+    // 2. Build the slides array dynamically
+    const slides = [];
+
+    images.forEach((img, index) => {
+      // Store the index on the element for click handling
+      img.dataset.pswpIndex = index;
+      img.style.cursor = 'zoom-in';
+
+      // Use the full-resolution src (or data-full-src if provided)
+      const fullSrc = img.dataset.fullSrc || img.src;
+
+      // We need natural dimensions; use a fallback if not yet loaded
+      const width = img.naturalWidth || 1600;
+      const height = img.naturalHeight || 1200;
+
+      slides.push({
+        src: fullSrc,
+        width: width,
+        height: height,
+        alt: img.alt || '',
+        element: img
+      });
+    });
+
+    // 3. Preload natural dimensions (for accuracy)
+    slides.forEach((slide) => {
+      const tempImg = new Image();
+      tempImg.onload = function () {
+        slide.width = this.naturalWidth;
+        slide.height = this.naturalHeight;
+      };
+      tempImg.src = slide.src;
+    });
+
+    // 4. Initialize PhotoSwipe Lightbox
+    const lightbox = new PhotoSwipeLightbox({
+      dataSource: slides,
+      pswpModule: PhotoSwipe,
+
+      // Zoom settings
+      initialZoomLevel: 'fit',
+      secondaryZoomLevel: 2,
+      maxZoomLevel: 4,
+
+      // UI options
+      closeSVG: '<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24"><line x1="4" y1="4" x2="20" y2="20" stroke="currentColor" stroke-width="2"/><line x1="20" y1="4" x2="4" y2="20" stroke="currentColor" stroke-width="2"/></svg>',
+      
+      // Animation
+      showAnimationDuration: 300,
+      hideAnimationDuration: 300,
+
+      // Thumbnail animation (zoom from clicked image)
+      thumbEl: (thumbIndex) => slides[thumbIndex]?.element || false,
+    });
+
+    lightbox.init();
+
+    // 5. Attach click handlers to each image
+    images.forEach((img) => {
+      img.addEventListener('click', (e) => {
+        e.preventDefault();
+        const index = parseInt(img.dataset.pswpIndex, 10);
+        lightbox.loadAndOpen(index);
+      });
+    });
+  });
+</script>
